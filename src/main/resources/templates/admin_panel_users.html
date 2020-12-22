@@ -1,0 +1,34 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/admin_moder_panel_layout.html">
+    <div layout:fragment="admin_moder_content">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 th:text="#{text.shopUsers}"></h2>
+            <a th:href="@{'/register'}" class="btn btn-dark text-uppercase" role="button"><i class="fas fa-plus"></i> <span th:text="#{button.add}"></span></a>
+        </div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th class = "text-uppercase" th:text = "#{label.email}"></th>
+                <th class = "text-uppercase" th:text = "#{text.full_name}"></th>
+                <th class = "text-uppercase" th:text = "#{text.roles}"></th>
+                <th class = "text-uppercase" th:text = "#{label.details}"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="u : ${shopUsers}">
+                <td th:text = "${u.getId()}"></td>
+                <td th:text = "${u.getEmail()}"></td>
+                <td th:text = "${u.getFullName()}"></td>
+                <td>
+                    <span th:each="r : ${u.getRoles()}">
+                        <span th:text="${r.getName()}"></span>
+                    </span>
+                </td>
+                <td>
+                    <a role="button" th:href="@{'/allinshop_control_panel/user_details/' + ${u.getId()}}" class="btn btn-dark btn-block text-uppercase"><i class="fas fa-info-circle"></i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</html>

@@ -1,0 +1,77 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec = "http://www.thymeleaf.org/extras/spring-security"
+      layout:decorator="layout/admin_moder_panel_layout.html">
+<div layout:fragment="admin_moder_content">
+    <div class="col-10">
+        <div class="row mb-3">
+            <div class="col align-self-center">
+                <img th:src="@{'/view_picture/' + ${shopUser.getPictureUrl()}}" alt="avatar" class="img-thumbnail" style="object-fit: cover; height: 160px;">
+            </div>
+            <div class="col-9">
+                <form th:action="@{'/update_full_name'}" accept-charset="UTF-8" method="post">
+                    <div class="form-group">
+                        <label th:text="#{label.email} + ':'"></label>
+                        <input type="email" class="form-control" name="user_email" th:value="${shopUser.getEmail()}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label th:text="#{text.full_name} + ':'"></label>
+                        <input type="text" class="form-control" name="user_full_name" th:value="${shopUser.getFullName()}">
+                    </div>
+                    <button type="submit" class="btn btn-primary text-uppercase" th:text="#{button.update} + ' ' + #{text.profile}"></button>
+                </form>
+            </div>
+        </div>
+        <div class="mb-3">
+            <form th:action="@{'/update_password'}" method="post">
+                <input type="hidden" name="user_email" th:value="${shopUser.getEmail()}">
+                <div class="form-group">
+                    <label th:text="#{text.old_password} + ':'"></label>
+                    <input type="password" class="form-control" name="old_user_password" th:placeholder="#{text.old_password}">
+                </div>
+                <div class="form-group">
+                    <label th:text="#{text.new_password} + ':'"></label>
+                    <input type="password" class="form-control" name="new_user_password" th:placeholder="#{text.new_password}">
+                </div>
+                <div class="form-group">
+                    <label th:text="#{text.retype_new_password} + ':'"></label>
+                    <input type="password" class="form-control" name="re_new_user_password" th:placeholder="#{text.retype_new_password}">
+                </div>
+                <button type="submit" class="btn btn-primary text-uppercase" th:text="#{button.update} + ' ' + #{label.password}"></button>
+            </form>
+        </div>
+        <h2 th:text="#{text.roles}" class="mt-3"></h2>
+        <div id="rolesDiv">
+            <table class="table">
+                <tbody>
+                    <tr th:each="r : ${shopUser.getRoles()}">
+                        <form th:action="@{'/allinshop_control_panel/unset_role'}" method="post" accept-charset="UTF-8">
+                            <input type="hidden" name="user_email" th:value="${shopUser.getEmail()}">
+                            <input type="hidden" th:value="${r.getId()}" name="role_id">
+                            <th th:text="${r.getName()}"></th>
+                            <th class="text-right">
+                                <button type="submit" class="btn btn-danger btn-sm fas fa-minus"></button>
+                            </th>
+                        </form>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table">
+                <tbody>
+                    <tr th:each="r : ${roles}">
+                        <form th:action="@{'/allinshop_control_panel/set_role'}" method="post" accept-charset="UTF-8">
+                            <input type="hidden" name="user_email" th:value="${shopUser.getEmail()}">
+                            <input type="hidden" th:value="${r.getId()}" name="role_id">
+                            <th th:text="${r.getName()}"></th>
+                            <th class="text-right">
+                                <button type="submit" class="btn btn-success btn-sm fas fa-plus"></button>
+                            </th>
+                        </form>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</html>

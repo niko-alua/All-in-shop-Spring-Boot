@@ -1,0 +1,23 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/admin_moder_panel_layout.html">
+    <div layout:fragment="admin_moder_content">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 th:text="#{text.bought_items}"></h2>
+        </div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th th:text="#{text.item}"></th>
+                <th th:text="#{label.amount}"></th>
+                <th th:text="#{text.purchase_date}"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="bought : ${boughtItems}">
+                <td th:text = "${bought.getShopItem().getName()}"></td>
+                <td th:text = "${bought.getAmount()}"></td>
+                <td th:text = "${isoFormat.format(bought.getBuyDate())}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</html>

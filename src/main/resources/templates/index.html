@@ -1,0 +1,99 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main.html">
+    <div layout:fragment="body_content">
+
+        <div th:insert="~{layout/search_form}"></div>
+
+        <div id="banner" class="carousel slide mb-4" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#banner" data-slide-to="0" class="active"></li>
+                <li data-target="#banner" data-slide-to="1"></li>
+                <li data-target="#banner" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="https://cdn0.it4profit.com/news/29/1416/1.jpg" class="d-block w-100" alt="Apple MacBook Pro 13">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5 class="text-dark bg-white" th:text="#{label.banner_top}"></h5>
+                        <p class="font-weight-bold" th:text="#{label.banner_foot}"></p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="https://i2.wp.com/itc.ua/wp-content/uploads/2020/09/apple-watch-series-6.png?fit=1200%2C850&quality=100&strip=all&ssl=1" class="d-block w-100" alt="Apple Watch Series 6">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5 class="text-dark bg-white" th:text="#{label.banner_top}"></h5>
+                        <p class="font-weight-bold" th:text="#{label.banner_foot}"></p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="https://artforlife.ru/wp-content/uploads/2020/07/pre-kontseptsiya-black-ps5-eto-dizajn-v-kotorom-nuzhdaetsya-konsol.jpg" class="d-block w-100" alt="PlayStation 5">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5 class="text-dark bg-white" th:text="#{label.banner_top}"></h5>
+                        <p class="font-weight-bold" th:text="#{label.banner_foot}"></p>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#banner" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#banner" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+
+        <div id = "topPageItems" style="display: block;">
+            <div class="row row-cols-3">
+                <div class="col mb-4" th:each="shopItem : ${shopItems}">
+                    <div class="card">
+                        <img class="card-img-top list" th:src="@{${shopItem.getPictureUrl()}}" alt="Shop Item image">
+                        <div class="card-body">
+                            <h5 class="card-title"><a th:href="@{'/details/' + ${shopItem.getId()}}" class="text-decoration-none" th:text="${shopItem.getName()}"></a></h5>
+                            <h5>$<span th:text="${shopItem.getPrice()}"></span></h5>
+                            <p class="card-text" th:text="${shopItem.getDescription()}"></p>
+                            <h6>
+                                <span class="text-uppercase" th:text="#{label.brand} + ':'"></span> <a th:href="@{'/detailed_search?foundItem_brand=' + ${shopItem.getBrand()!=null ? shopItem.getBrand().getId() : '0'}}" th:text="${shopItem.getBrand()!=null ? shopItem.getBrand().getName() : '-----'} + ',' + ${shopItem.getBrand()!=null ? shopItem.getBrand().getCountry().getCode() : '-----'}"></a>
+                            </h6>
+                        </div>
+                        <div class="card-footer">
+                        <span class="rating" th:rating = "${shopItem.getStars()}">
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id = "allItems" style="display: none;">
+            <div class="row row-cols-3">
+                <div class="col mb-4" th:each="shopItem : ${allShopItems}">
+                    <div class="card">
+                        <img class="card-img-top list" th:src="@{${shopItem.getPictureUrl()}}" alt="Shop Item image">
+                        <div class="card-body">
+                            <h5 class="card-title"><a th:href="@{'/details/' + ${shopItem.getId()}}" class="text-decoration-none" th:text="${shopItem.getName()}"></a></h5>
+                            <h5 th:text="'$' + ${shopItem.getPrice()}"></h5>
+                            <p class="card-text" th:text="${shopItem.getDescription()}"></p>
+                            <h6><span class="text-uppercase" th:text="#{label.brand} + ':'"></span> <a th:href="@{'/detailed_search?foundItem_brand=' + ${shopItem.getBrand()!=null ? shopItem.getBrand().getId() : '0'}}" th:text="${shopItem.getBrand()!=null ? shopItem.getBrand().getName() : '-----'} + ',' + ${shopItem.getBrand()!=null ? shopItem.getBrand().getCountry().getCode() : '-----'}"></a></h6>
+                        </div>
+                        <div class="card-footer">
+                        <span class="rating" th:rating = "${shopItem.getStars()}">
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</html>
+

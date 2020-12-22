@@ -1,0 +1,57 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/admin_moder_panel_layout.html">
+    <div layout:fragment="admin_moder_content">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 th:text="#{text.roles}"></h2>
+            <button type="button" class="btn btn-dark text-uppercase" data-toggle="modal" data-target="#addRole"><i class="fas fa-plus"></i> <span th:text="#{button.add}"></span></button>
+            <div class="modal fade" id="addRole" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <form th:action="@{'/allinshop_control_panel/add_role'}" method="post" accept-charset="UTF-8">
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label class="text-uppercase" th:text="#{label.name} + ':'"></label>
+                                    <input type="text" class="form-control" name="add_role_name">
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-uppercase" th:text="#{label.desc} + ':'"></label>
+                                    <textarea class="form-control" name="add_role_desc"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success" th:text="#{button.add}"></button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal" th:text="#{button.closeModal}"></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th class = "text-uppercase" th:text = "#{label.name}"></th>
+                <th class = "text-uppercase" th:text = "#{label.desc}"></th>
+                <th class = "text-uppercase" th:text = "#{label.details}"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="r : ${roles}">
+                <td th:text = "${r.getId()}"></td>
+                <td th:text = "${r.getName()}"></td>
+                <td th:text = "${r.getDescription()}"></td>
+                <td>
+                    <a role="button" th:href="@{'/allinshop_control_panel/role_details/' + ${r.getId()}}" class="btn btn-dark btn-block text-uppercase"><i class="fas fa-info-circle"></i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</html>

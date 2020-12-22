@@ -1,0 +1,93 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/admin_moder_panel_layout.html">
+    <div layout:fragment="admin_moder_content">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 th:text="#{admin_nav.countries}"></h2>
+            <button type="button" class="btn btn-dark text-uppercase" data-toggle="modal" data-target="#addCountry"><i class="fas fa-plus"></i> <span th:text="#{button.add}"></span></button>
+            <div class="modal fade" id="addCountry" tabindex="-1" role="dialog" aria-labelledby="addItemTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title" th:text="#{label.country_modal_header}"></h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <form th:action="@{'/allinshop_control_panel/add_country'}" method="post" accept-charset="UTF-8">
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="add_country_name" class="text-uppercase" th:text="#{label.name} + ':'"></label>
+                                    <input type="text" class="form-control" id="add_country_name" name="add_country_name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="add_country_code" class="text-uppercase" th:text="#{label.code} + ':'"></label>
+                                    <input type="text" class="form-control" id="add_country_code" name="add_country_code">
+                                </div>
+                            </div>
+
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success" th:text="#{button.add}"></button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal" th:text="#{button.closeModal}"></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th class = "text-uppercase" th:text = "#{label.name}"></th>
+                <th class = "text-uppercase" th:text = "#{label.code}"></th>
+                <th class = "text-uppercase" th:text = "#{button.edit}"></th>
+                <th class = "text-uppercase" th:text = "#{button.delete}"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="cnt : ${countries}">
+                <td th:text = "${cnt.getId()}"></td>
+                <td th:text = "${cnt.getName()}"></td>
+                <td th:text = "${cnt.getCode()}"></td>
+                <td>
+                    <button type="button" class="btn btn-dark" data-toggle="modal" th:data-target="'#editCountry' + ${cnt.getId()}"><i class="fas fa-edit"></i></button>
+                </td>
+                <td>
+                    <form th:action="@{'/allinshop_control_panel/delete_country'}" method="post">
+                        <input type="hidden" name = "delete_country_id" th:value="${cnt.getId()}">
+                        <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                    </form>
+                </td>
+                <div class="modal fade" th:id="'editCountry' + ${cnt.getId()}" tabindex="-1" role="dialog" aria-labelledby="editCountryTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editCountryTitle" th:text="#{button.edit}"></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form th:action="@{'/allinshop_control_panel/save_country'}" method="post" accept-charset="UTF-8">
+                                <div class="modal-body">
+                                    <input type="hidden" name = "save_country_id" th:value="${cnt.getId()}">
+                                    <div class="form-group">
+                                        <label for="save_country_name" class="text-uppercase" th:text="#{label.name} + ':'"></label>
+                                        <input type="text" class="form-control" id="save_country_name" name="save_country_name" th:value="${cnt.getName()}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="save_country_code" class="text-uppercase" th:text="#{label.code} + ':'"></label>
+                                        <input type="text" class="form-control" id="save_country_code" name="save_country_code" th:value="${cnt.getCode()}">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary"><i class="fas fa-edit"></i> <span th:text="#{button.edit}"></span></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</html>

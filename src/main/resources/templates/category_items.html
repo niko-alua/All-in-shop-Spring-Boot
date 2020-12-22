@@ -1,0 +1,30 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main.html">
+    <div layout:fragment="body_content">
+        <h3 class="mb-4"><span th:class="${category.getLogoURL()}"></span> Items in <span th:text="${category.getName()}"></span></h3>
+
+        <div class="row row-cols-3">
+            <div class="col mb-4" th:each="shopItem : ${shopItems}">
+                <div class="card">
+                    <img class="card-img-top list" th:src="@{${shopItem.getPictureUrl()}}" alt="Shop Item image">
+                    <div class="card-body">
+                        <h5 class="card-title"><a th:href="@{'/details/' + ${shopItem.getId()}}" class="text-decoration-none" th:text="${shopItem.getName()}"></a></h5>
+                        <h5>$<span th:text="${shopItem.getPrice()}"></span></h5>
+                        <p class="card-text" th:text="${shopItem.getDescription()}"></p>
+                        <h6>
+                            <span class="text-uppercase" th:text="#{label.brand} + ':'"></span> <a th:href="@{'/detailed_search?foundItem_brand=' + ${shopItem.getBrand()!=null ? shopItem.getBrand().getId() : '0'}}" th:text="${shopItem.getBrand()!=null ? shopItem.getBrand().getName() : '-----'} + ',' + ${shopItem.getBrand()!=null ? shopItem.getBrand().getCountry().getCode() : '-----'}"></a>
+                        </h6>
+                    </div>
+                    <div class="card-footer">
+                        <span class="rating" th:rating = "${shopItem.getStars()}">
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</html>

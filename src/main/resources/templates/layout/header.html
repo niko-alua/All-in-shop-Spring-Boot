@@ -1,0 +1,41 @@
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #146044;"
+     xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec = "http://www.thymeleaf.org/extras/spring-security">
+    <div class="container">
+        <a class="navbar-brand text-uppercase font-weight-bolder" th:href="@{'/'}"><i class="fab fa-buysellads"></i> all-in shop</a>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{'/allinshop_control_panel/items'}" sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_MODERATOR')" th:text = "#{text.admin_panel}"></a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+                <a class="nav-link text-white-50" sec:authorize="isAuthenticated()" th:href="@{'/profile'}" th:text="${currentUser.getFullName()}"></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link text-white-50" sec:authorize="isAnonymous()" th:href="@{'/login'}" th:text="#{label.login}"></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link text-white-50" sec:authorize="isAnonymous()" th:href="@{'/register'}" th:text="#{text.register}"></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link text-white-50" th:href="@{'/basket'}">
+                    <i class="fas fa-shopping-cart"></i> <span th:text="#{text.basket}"></span> (<span th:text = "${total_amount}"></span>)
+                </a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link text-white-50" sec:authorize="isAuthenticated()" href="JavaScript: void(0)" onclick="document.getElementById('logoutFormId').submit()" th:text="#{label.logout}"></a>
+            </li>
+            <li class="nav-item active dropdown">
+                <a class="nav-link text-white-50 dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="#{button.language}">
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="?lang=eng">ENG</a>
+                    <a class="dropdown-item" href="?lang=rus">RUS</a>
+                    <a class="dropdown-item" href="?lang=kzt">KZT</a>
+                </div>
+            </li>
+        </ul>
+        <form th:action="@{'/logout'}" method="post" id = "logoutFormId" sec:authorize="isAuthenticated()"></form>
+    </div>
+</nav>

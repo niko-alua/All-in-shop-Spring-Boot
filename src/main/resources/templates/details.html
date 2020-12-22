@@ -1,0 +1,100 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/main.html"
+      xmlns:sec = "http://www.thymeleaf.org/extras/spring-security">
+    <div layout:fragment="body_content">
+        <div th:insert="~{layout/search_form}"></div>
+
+        <div class="card my-4">
+            <img class="card-img-top details" th:src="@{${item.getPictureUrl()}}" alt="Shop Item image">
+            <div class="card-body">
+                <h4 class="card-title" th:text="${item.getName()}"></h4>
+                <h5>$<span th:text="${item.getPrice()}"></span></h5>
+                <p class="card-text" th:text="${item.getDescription()}"></p>
+                <h6>
+                    <span class="text-uppercase" th:text="#{label.brand} + ':'"></span> <a th:href="@{'/detailed_search?foundItem_brand=' + ${item.getBrand()!=null ? item.getBrand().getId() : ''}}" th:text="${item.getBrand()!=null ? item.getBrand().getName() : '-----'} + ',' + ${item.getBrand()!=null ? item.getBrand().getCountry().getCode() : '-----'}"></a>
+                </h6>
+                <h5 th:if="${!pictures.isEmpty() || pictures != null}" th:text="#{text.screenshots}" class="text-center"></h5>
+                <div class="row row-cols-3 text-center text-lg-left" id="gallery">
+                    <div class="col-lg-3 col-md-4 col-6" th:each="pic, state : ${pictures}">
+                        <div class="d-block mb-4 h-100" data-toggle="modal" th:data-target="'#galleryModal' + ${state.index}">
+                            <img class="img-fluid img-thumbnail" th:src="@{'/view_item_pic/' + ${pic.getUrl()}}" alt="Shop item picture">
+                        </div>
+                        <div class="modal fade" th:id="'galleryModal' + ${state.index}" tabindex="-1" role="dialog" aria-hidden="true">
+                            <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content m-0 p-0">
+                                    <div class="modal-body m-0 p-0">
+                                        <img class="img-fluid" th:src="@{'/view_item_pic/' + ${pic.getUrl()}}" alt="Shop item picture" style="width:100%">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-footer">
+                <span class="rating" th:rating = "${item.getStars()}">
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                </span>
+            </div>
+        </div>
+
+        <form th:action="@{'/add_to_basket'}" method="post">
+            <input type="hidden" th:value="${item.getId()}" name="item_id">
+            <button type="submit" class="btn btn-success"><i class="fas fa-shopping-cart"></i> <span th:text="#{button.add_to_basket}"></span></button>
+        </form>
+
+        <form th:action="@{'/add_comment'}" method="get" sec:authorize="isAuthenticated()">
+            <div class="form-group">
+                <textarea class="form-control" rows="3" name="comment_text"></textarea>
+            </div>
+            <input type="hidden" name="comment_author" th:value="${currentUser.getId()}">
+            <input type="hidden" name="comment_item" th:value="${item.getId()}">
+            <button type="submit" class="btn btn-primary float-right mb-4"><i class="fas fa-comments"></i> <span th:text="#{button.add_comment}"></span></button>
+        </form>
+
+        <div class="card mt-4" style="clear: both" th:if="${comments != null}">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" th:if="${!comments.isEmpty()}" th:each="comment : ${comments}">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h5 th:text="${comment.getAuthor().getFullName()}"></h5>
+                        <p th:text="${isoFormat.format(comment.getAddedDate())}"></p>
+                    </div>
+                    <div class="d-flex align-items-baseline justify-content-between">
+                        <p th:text="${comment.getComment()}" style="width: 80%"></p>
+                        <div>
+                            <div class="d-inline-block" th:if="${comment.getAuthor().equals(currentUser)}">
+                                <button class="btn btn-dark" type="button" data-toggle="collapse" th:data-target="'#collapseExample' + ${comment.getId()}" aria-expanded="false" th:aria-controls="'collapseExample' + ${comment.getId()}">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                            <form th:action="@{'/delete_comment'}" method="post" class="d-inline-block" th:if="${comment.getAuthor().equals(currentUser) or is_admin_or_moder}">
+                                <input type="hidden" name="item" th:value="${item.getId()}">
+                                <input type="hidden" name="comment" th:value="${comment.getId()}">
+                                <button type = "submit" class="btn btn-danger">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class = "collapse" th:id="'collapseExample' + ${comment.getId()}">
+                        <form th:action="@{'/edit_comment'}" method="post" class="d-flex align-items-baseline justify-content-between">
+                            <textarea class="form-control" name="edited_comment_text" rows="2" style="width: 80%" th:text="${comment.getComment()}"></textarea>
+                            <input type="hidden" name="edited_comment" th:value="${comment.getId()}">
+                            <input type="hidden" name="edited_comment_author" th:value="${comment.getAuthor().getId()}">
+                            <input type="hidden" name="edited_comment_item" th:value="${comment.getItem().getId()}">
+                            <button type="submit" class="btn btn-dark text-uppercase" th:text="#{button.edit}"></button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</html>

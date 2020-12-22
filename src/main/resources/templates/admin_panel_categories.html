@@ -1,0 +1,93 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/admin_moder_panel_layout.html">
+    <div layout:fragment="admin_moder_content">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 th:text="#{label.categories}"></h2>
+            <button type="button" class="btn btn-dark text-uppercase" data-toggle="modal" data-target="#addCategory"><i class="fas fa-plus"></i> <span th:text="#{button.add}"></span></button>
+            <div class="modal fade" id="addCategory" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title" th:text="#{label.category_modal_header}"></h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <form th:action="@{'/allinshop_control_panel/add_category'}" method="post" accept-charset="UTF-8">
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label class="text-uppercase" th:text="#{label.name} + ':'"></label>
+                                    <input type="text" class="form-control" name="add_category_name">
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-uppercase" th:text="#{label.logo_url} + ':'"></label>
+                                    <input type="text" class="form-control" name="add_category_logo_url">
+                                </div>
+                            </div>
+
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success" th:text="#{button.add}"></button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal" th:text="#{button.closeModal}"></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th class = "text-uppercase" th:text = "#{label.name}"></th>
+                <th class = "text-uppercase" th:text = "#{label.logo_url}"></th>
+                <th class = "text-uppercase" th:text = "#{button.edit}"></th>
+                <th class = "text-uppercase" th:text = "#{button.delete}"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="ctg : ${categories}">
+                <td th:text = "${ctg.getId()}"></td>
+                <td th:text = "${ctg.getName()}"></td>
+                <td th:text = "${ctg.getLogoURL()}"></td>
+                <td>
+                    <button type="button" class="btn btn-dark" data-toggle="modal" th:data-target="'#editCategory' + ${ctg.getId()}"><i class="fas fa-edit"></i></button>
+                </td>
+                <td>
+                    <form th:action="@{'/allinshop_control_panel/delete_category'}" method="post">
+                        <input type="hidden" name = "delete_category_id" th:value="${ctg.getId()}">
+                        <button type="submit" class="btn btn-danger text-uppercase"><i class="fas fa-trash-alt"></i></button>
+                    </form>
+                </td>
+                <div class="modal fade" th:id="'editCategory' + ${ctg.getId()}" tabindex="-1" role="dialog" aria-labelledby="editCountryTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editCountryTitle" th:text="#{button.edit}"></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form th:action="@{'/allinshop_control_panel/save_category'}" method="post" accept-charset="UTF-8">
+                                <div class="modal-body">
+                                    <input type="hidden" name = "save_category_id" th:value="${ctg.getId()}">
+                                    <div class="form-group">
+                                        <label for="save_category_name" class="text-uppercase" th:text="#{label.name} + ':'"></label>
+                                        <input type="text" class="form-control" id="save_category_name" name="save_category_name" th:value="${ctg.getName()}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="save_category_logo_url" class="text-uppercase" th:text="#{label.logo_url} + ':'"></label>
+                                        <input type="text" class="form-control" id="save_category_logo_url" name="save_category_logo_url" th:value="${ctg.getLogoURL()}">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary"><i class="fas fa-edit"></i> <span th:text="#{button.edit}"></span></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</html>

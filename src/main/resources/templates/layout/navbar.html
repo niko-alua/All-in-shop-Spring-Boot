@@ -1,0 +1,38 @@
+<ul class="list-group" xmlns:th="http://www.thymeleaf.org">
+    <li class="list-group-item" style="background-color: #146044;"><a href="#" class="text-decoration-none text-white font-weight-bolder"><span th:text="#{label.categories}"></span></a></li>
+    <li class="list-group-item">
+        <a href="javascript:change_div('allItems', 'topPageItems')" class="text-decoration-none text-dark font-weight-bolder">
+            <span style = "width: 32px" class="fas fa-shopping-cart"></span> <span th:text="#{label.all_items}"></span>
+        </a>
+    </li>
+    <li class="list-group-item" th:each="ctg : ${categories}">
+        <a th:href="@{'/category?cat_id=' + ${ctg.getId()}}" class="text-decoration-none text-dark font-weight-bolder">
+            <span style = "width: 32px" th:class="${ctg.getLogoURL()}"></span> <span th:text="${ctg.getName()}"></span>
+        </a>
+    </li>
+</ul>
+
+<ul class="list-group mt-4" xmlns:th="http://www.thymeleaf.org">
+    <li class="list-group-item" style="background-color: #146044;"><a href="#" class="text-decoration-none text-white font-weight-bolder"><span th:text="#{label.brands}"></span></a></li>
+    <li th:each="brand : ${brands}" class="list-group-item">
+        <a th:href="@{'/detailed_search?foundItem_brand=' + ${brand!=null ? brand.getId() : '0'}}" class="text-decoration-none text-dark font-weight-bolder" th:text="${brand.name}"></a>
+    </li>
+</ul>
+
+<ul class="list-group mt-4" xmlns:th="http://www.thymeleaf.org">
+    <li class="list-group-item" style="background-color: #146044;"><a href="#" class="text-decoration-none text-white font-weight-bolder"><span th:text="#{label.payments}"></span></a></li>
+    <li class="list-group-item">
+        <ul class="list-unstyled">
+            <li class="d-flex justify-content-between align-items-center">
+                <i style="color: #146044" class="fab fa-cc-apple-pay fa-3x"></i>
+                <i style="color: #146044" class="fab fa-cc-visa fa-3x"></i>
+                <i style="color: #146044" class="fab fa-cc-paypal fa-3x"></i>
+            </li>
+            <li class="d-flex justify-content-between align-items-center">
+                <i style="color: #146044" class="fab fa-cc-amazon-pay fa-3x"></i>
+                <i style="color: #146044" class="fab fa-cc-mastercard fa-3x"></i>
+                <i style="color: #146044" class="fab fa-cc-amex fa-3x"></i>
+            </li>
+        </ul>
+    </li>
+</ul>

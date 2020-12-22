@@ -1,0 +1,10 @@
+<form th:action="@{'/detailed_search'}" method="get" xmlns:th="http://www.thymeleaf.org" accept-charset="UTF-8">
+    <div class="form-row">
+        <div class="col-9">
+            <input type="text" class="form-control" th:placeholder="#{placeholder.search}" name="foundItem_name">
+        </div>
+        <div class="col-3">
+            <button type="submit" class="btn btn-primary text-uppercase" style="background-color: #146044; width: 100%" th:text="#{button.search}"></button>
+        </div>
+    </div>
+</form>

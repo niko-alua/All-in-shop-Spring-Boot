@@ -1,0 +1,69 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main.html">
+    <div layout:fragment="body_content">
+        <form th:action="@{'/detailed_search'}" method="get" accept-charset="UTF-8">
+            <div class="form-row">
+                <div class="col-3">
+                    <label for="name" th:text="#{label.name} + ':'"></label>
+                    <input type="text" class="form-control" name = "foundItem_name" id = "name" th:value="${name!= '' ? name : null}">
+                </div>
+                <div class="col-2">
+                    <label for="brand" th:text="#{label.brand} + ':'"></label>
+                    <select name="foundItem_brand" id="brand" class="form-control">
+                        <option th:selected="${brand == null}" value="0">-----</option>
+                        <option th:each="br : ${brands}" th:text="${br.name}" th:value="${br.id}" th:selected="${brand != null && brand.id == br.id}"></option>
+                    </select>
+                </div>
+                <div class="col-2">
+                    <label for="price_from" th:text="#{label.search_price_from}"></label>
+                    <input type="text" class="form-control" name = "foundItem_price_from" id = "price_from" th:value="${priceFrom != 0 ? priceFrom : null}">
+                </div>
+                <div class="col-2">
+                    <label for="price_to" th:text="#{label.search_price_to}"></label>
+                    <input type="text" class="form-control" name = "foundItem_price_to" id = "price_to" th:value="${priceTo != 999999 ? priceTo : null}">
+                </div>
+                <div class="col-3 align-self-end">
+                    <button type="submit" class="btn btn-primary text-uppercase" style="background-color: #146044; width: 100%" th:text="#{button.search}"></button>
+                </div>
+            </div>
+            <div class="my-4 d-flex justify-content-between">
+                <h4 th:text="#{label.search_results}"></h4>
+                <div>
+                    <p th:text="#{label.order_by_price}" class="pr-2"></p>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons" style="width: 100%;">
+                        <label class="btn btn-secondary" style="font-size: small">
+                            <input type="radio" value="ascending" name="order_by" id="option1" th:checked="${order_by != null && order_by.equals('ascending')}"><span style="font-size: small" th:text="#{button.ascending}"></span>
+                        </label>
+                        <label class="btn btn-secondary" style="font-size: medium">
+                            <input type="radio" value="descending"  name="order_by" id="option2" th:checked="${order_by != null && order_by.equals('descending')}"><span style="font-size: small" th:text="#{button.descending}"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+        <div class="row row-cols-3" th:if="${shopItems != null}">
+            <div class="col mb-4" th:each="shopItem : ${shopItems}">
+                <div class="card">
+                    <img class="card-img-top list" th:src="@{${shopItem.getPictureUrl()}}" alt="Shop Item image">
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="#" class="text-decoration-none" th:text="${shopItem.getName()}"></a></h5>
+                        <h5>$<span th:text="${shopItem.getPrice()}"></span></h5>
+                        <p class="card-text" th:text="${shopItem.getDescription()}"></p>
+                    </div>
+                    <div class="card-footer">
+                <span class="rating" th:rating = "${shopItem.getStars()}">
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</html>

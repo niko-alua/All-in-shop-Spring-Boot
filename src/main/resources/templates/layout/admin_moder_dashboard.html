@@ -1,0 +1,29 @@
+<div class="card"
+     xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec = "http://www.thymeleaf.org/extras/spring-security">
+    <div class="card-header bg-info text-uppercase text-white font-weight-bolder" th:text="#{text.dashboard}">
+    </div>
+    <div class="list-group list-group-flush">
+        <a th:href="@{'/allinshop_control_panel/users'}" sec:authorize="hasAuthority('ROLE_ADMIN')" class="list-group-item list-group-item-action">
+            <span style = "width: 32px" class="fas fa-users"></span> <span th:text="#{text.shopUsers}"></span>
+        </a>
+        <a th:href="@{'/allinshop_control_panel/roles'}" sec:authorize="hasAuthority('ROLE_ADMIN')" class="list-group-item list-group-item-action">
+            <span style = "width: 32px" class="fas fa-user-tag"></span> <span th:text="#{text.roles}"></span>
+        </a>
+        <a th:href="@{'/allinshop_control_panel/items'}" class="list-group-item list-group-item-action">
+            <span style = "width: 32px" class="fas fa-shopping-cart"></span> <span th:text="#{admin_nav.items}"></span>
+        </a>
+        <a th:href="@{'/allinshop_control_panel/countries'}" sec:authorize="hasAuthority('ROLE_ADMIN')" class="list-group-item list-group-item-action">
+            <span style = "width: 32px" class="fas fa-globe-europe"></span> <span th:text="#{admin_nav.countries}"></span>
+        </a>
+        <a th:href="@{'/allinshop_control_panel/brands'}" sec:authorize="hasAuthority('ROLE_ADMIN')" class="list-group-item list-group-item-action">
+            <span style = "width: 32px" class="far fa-copyright"></span> <span th:text="#{label.brands}"></span>
+        </a>
+        <a th:href="@{'/allinshop_control_panel/categories'}" sec:authorize="hasAuthority('ROLE_ADMIN')" class="list-group-item list-group-item-action">
+            <span style = "width: 32px" class="fab fa-buffer"></span> <span th:text="#{label.categories}"></span>
+        </a>
+        <a th:href="@{'/allinshop_control_panel/bought_items'}" class="list-group-item list-group-item-action">
+            <span style = "width: 32px" class="fas fa-shopping-cart"></span> <span th:text="#{text.bought_items}"></span></span>
+        </a>
+    </div>
+</div>
